@@ -11,17 +11,16 @@ public class AnalysisEngine {
 
     // SourceFiles and config are used to store the list of paths of java files
     // which we want to analyze and cofig will contain some settings
-    private List<String> sourceFiles;
-  //  private AnalysisConfig config;
+    private List<String> sourceFiles=null;
+    private AnalysisConfig config=null;
 
     public AnalysisEngine()
     {
 
         this.sourceFiles=new ArrayList<>(); //Empty list
-       // this.config=new AnalysisConfig();   // Default config
+        this.config=new AnalysisConfig();   // Default config
 
     }
-
     // Initialization
     // Find files to analyze
     // Recursively explore all subdirectories and collect path
@@ -47,7 +46,8 @@ public class AnalysisEngine {
         {
             return;
         }
-        // if directory present it will list all files present in directoory
+        // if directory present it will list all files present in
+        // directoory
         // if its again directory recursive call made for the scanDirectory function
         // but if not it will find the file having extension as .java and return the absoulte
         // path of that particular file
@@ -66,5 +66,41 @@ public class AnalysisEngine {
                 }
             }
         }
+    }
+
+    // Run complete analysis now we have check the path of the files
+    // that we want to analyze now complete Analysis of code will be run
+
+    public AnalysisResult runAnalysis()
+    {
+        AnalysisResult result=new AnalysisResult();
+        System.out.println("Analyzing Code quality...");
+        for(String filePath:sourceFiles)
+        {
+            System.out.println("Analyzing:"+filePath);
+            analyzeFile(filePath,result);
+        }
+
+        return Result;
+    }
+
+    private void analyzeFile(String filePath,AnalysisResult result)
+    {
+        // Implement file analysis logic here
+    }
+
+}
+
+// Analysis Configuration
+
+class AnalysisConfig
+{
+    private boolean enablePerformanceRules=true;
+    private boolean eneableSecurityRules=true;
+    private boolean enableMaintainabiltyRules=true;
+
+    public boolean isEnablePerformance()
+    {
+        return enablePerformanceRules;
     }
 }

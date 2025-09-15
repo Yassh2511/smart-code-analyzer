@@ -81,9 +81,15 @@ public class AnalysisEngine {
             analyzeFile(filePath,result);
         }
 
-        return Result;
+        return result;
     }
 
+    // In analyzeFile we will handle each file individually
+    // Open the java file
+    //Parse java file
+    //apply analysis rules
+    // like string concatenation in loops,hardcoded passwords,unused variables
+    //Then find violations and add it into result
     private void analyzeFile(String filePath,AnalysisResult result)
     {
         // Implement file analysis logic here
@@ -92,15 +98,131 @@ public class AnalysisEngine {
 }
 
 // Analysis Configuration
-
+// This config will tell about which rules we should apply by keeping them
+// False or true
 class AnalysisConfig
 {
-    private boolean enablePerformanceRules=true;
-    private boolean eneableSecurityRules=true;
-    private boolean enableMaintainabiltyRules=true;
+    private boolean enablePerformanceRules=true;  // Check for slow code
+    private boolean enableSecurityRules=true;   // Check for security issues
+    private boolean enableMaintainabiltyRules=true;   // Check for hard to maintain code
 
-    public boolean isEnablePerformance()
+    public boolean isEnablePerformanceRules()
     {
         return enablePerformanceRules;
     }
+    public void setEnablePerformanceRules(boolean enable)
+    {
+        this.enablePerformanceRules=enable;
+    }
+    public boolean isEnableSecurityRules()
+    {
+        return enableSecurityRules;
+    }
+    public void setEnableSecurityRules(boolean enable)
+    {
+        this.enableSecurityRules=enable;
+    }
+    public boolean isEnableMaintainabilityRules()
+    {
+        return enableMaintainabiltyRules;
+    }
+    public void isEnableMaintainabilityRules(boolean enable)
+    {
+        this.enableMaintainabiltyRules=enable;
+    }
+}
+
+class AnalysisResult
+{
+    private List<Violation> violations;
+    private int totalFiles;
+    private int totalLines;
+    public AnalysisResult()
+    {
+        this.violations=new ArrayList<>();
+        this.totalFiles=0;
+        this.totalLines=0;
+    }
+
+    public void addViolation(Violation violation)
+    {
+        violations.add(violation);
+    }
+
+    //getter and setter to access total result
+    public List<Violation> getViolations()
+    {
+        return violations;
+    }
+    public int getTotalFiles()
+    {
+        return totalFiles;
+    }
+    public void setTotalFiles(int totalFiles)
+    {
+        this.totalFiles=totalFiles;
+    }
+    public int getTotalLines()
+    {
+        return totalLines;
+    }
+    public void setTotalLines(int totalFiles)
+    {
+        this.totalFiles=totalLines;
+    }
+
+}
+
+class Violation
+{
+    private String fileName;
+    private int lineNumber;
+    private String ruleName;
+    private String message;
+    private Severity severity;
+
+    public Violation(String fileName,int lineNumber,String ruleName,String message,Severity severity)
+    {
+        this.fileName=fileName;
+        this.lineNumber=lineNumber;
+        this.ruleName=ruleName;
+        this.message=message;
+        this.severity=severity;
+    }
+    public String getFileName()
+    {
+        return fileName;
+    }
+    public int getLineNumber()
+    {
+        return lineNumber;
+    }
+    public String getRuleName()
+    {
+        return ruleName;
+    }
+    public String getMessage()
+    {
+        return message;
+    }
+    public Severity getSeverity()
+    {
+        return severity;
+    }
+
+    // Override toString method to print violation
+
+    public String toString()
+    {
+        return severity+":"+fileName+":"+lineNumber+"-"+message+"["+ruleName+"]";
+    }
+
+}
+
+enum Severity
+{
+    INFO,
+    WARNING,
+    ERROR,
+    CRITICAL
 }

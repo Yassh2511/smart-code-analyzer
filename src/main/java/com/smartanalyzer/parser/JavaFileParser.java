@@ -3,6 +3,8 @@ package com.smartanalyzer.parser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,12 +51,86 @@ public class JavaFileParser
             // gorup(1) beacuae group(0) will give entire pattern but we only want group next to import
         }
     }
-    private void extractClasses(String content,CodeStructure structure){}
-    private void extractMethods(String content,CodeStructure structure){}
+    private void extractMethods(String content,CodeStructure structure)
+    {
+        Pattern methodPattern=Pattern.compile(
+                "(public|private|protected)?\\s*(static)?\\s*([\\w<>\\[\\]]+)\\s+(\\w+)\\s*\\([^)]*\\)\\s*\\{"
+        );
+        Matcher matcher=methodPattern.matcher(content);
+        while(matcher.find())
+        {
+            String methodSignature=matcher.group(4);
+            structure.addMethod(methodSignature);
+        }
+    }
+    private void extractClasses(String content,CodeStructure structure)
+    {
+        Pattern classPattern=Pattern.compile(
+                "(public|private|protected)?\\\\s*(abstract|final)?\\\\s*class\\\\s+(\\\\w+)"
+        );
+        Matcher matcher=classPattern.matcher(content);
+
+        while(matcher.find())
+        {
+            structure.addClass(matcher.group(3));
+            // group 3 because its the class name that we want
+        }
+    }
+
+    public static int getLineNumber(String content,int position)
+    {
+        int lineNumber=1;
+        for(int i=0;i<position &&i<content.length();i++)
+        {
+            if(content.charAt(i)=='\n')lineNumber++;
+        }
+        return lineNumber;
+    }
 
 }
 class CodeStructure
 {
-    CodeStructure(String fileName,String content){}
-    void addImport(String importName){}
+    private final String fileName;
+    private final String content;
+    private final String[] lines;
+    private final List<String> imports;
+    private final List<String> classes;
+    private final List<String> methods;
+
+    CodeStructure(String fileName,String content)
+    {
+        this.fileName = fileName;
+        this.content = content;
+        this.lines=content.split("\n");
+        this.imports=new ArrayList<>();
+        this.classes=new ArrayList<>();
+        this.methods=new ArrayList<>();
+    }
+    public String getFileName() { return fileName; }
+    public String getContent() { return content; }
+    public String[] getLines() { return lines; }
+    public List<String> getImports() { return imports; }
+    public List<String> getClasses() { return classes; }
+    public List<String> getMethods() { return methods; }
+
+    void addImport(String importName)
+    {
+        imports.add(importName);
+    }
+    void addMethod(String methodName)
+    {
+        methods.add(methodName);
+    }
+
+    void addClass(String className)
+    {
+        classes.add(className);
+    }
+
+    public int getLineCount() {
+        return lines.length;
+    }
+
 }
+
+

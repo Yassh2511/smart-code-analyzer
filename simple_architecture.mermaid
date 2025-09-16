@@ -1,0 +1,64 @@
+graph TB
+    subgraph "Entry Point"
+        MAIN[SmartCodeAnalyzer.java]
+    end
+    
+    subgraph "Command Line"
+        CLI[CommandLineInterface.java]
+    end
+    
+    subgraph "Core Engine"
+        ENGINE[AnalysisEngine.java]
+        CONFIG[AnalysisConfig.java]
+        RESULT[AnalysisResult.java]
+    end
+    
+    subgraph "File Processing"
+        PARSER[JavaSourceParser.java]
+        PARSED[ParsedJavaFile.java]
+    end
+    
+    subgraph "Rule System"
+        RULE_ENGINE[RuleEngine.java]
+        RULE_INTERFACE[AnalysisRule.java]
+    end
+    
+    subgraph "Performance Rules"
+        PERF1[StringConcatenationRule.java]
+        PERF2[CollectionEfficiencyRule.java]
+    end
+    
+    subgraph "Security Rules"
+        SEC1[HardcodedCredentialsRule.java]
+        SEC2[SqlInjectionRule.java]
+    end
+    
+    subgraph "Maintainability Rules"
+        MAINT1[MethodComplexityRule.java]
+        MAINT2[NamingConventionRule.java]
+    end
+    
+    subgraph "Data Models"
+        VIOLATION[Violation.java]
+        SEVERITY[Severity.java]
+    end
+    
+    MAIN --> CLI
+    CLI --> ENGINE
+    ENGINE --> CONFIG
+    ENGINE --> PARSER
+    ENGINE --> RULE_ENGINE
+    ENGINE --> RESULT
+    
+    PARSER --> PARSED
+    RULE_ENGINE --> RULE_INTERFACE
+    
+    RULE_INTERFACE --> PERF1
+    RULE_INTERFACE --> PERF2
+    RULE_INTERFACE --> SEC1
+    RULE_INTERFACE --> SEC2
+    RULE_INTERFACE --> MAINT1
+    RULE_INTERFACE --> MAINT2
+    
+    RESULT --> VIOLATION
+    VIOLATION --> SEVERITY

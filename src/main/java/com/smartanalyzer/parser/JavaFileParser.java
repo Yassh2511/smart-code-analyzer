@@ -127,8 +127,22 @@ class CodeStructure
         classes.add(className);
     }
 
+    public String getLineContent(int lineNumber)
+    {
+        if(lineNumber>0 && lineNumber<=lines.length)
+        {
+            return lines[lineNumber-1];
+        }
+        return "";
+    }
+
     public int getLineCount() {
         return lines.length;
+    }
+
+    public String toString()
+    {
+        return String.format("Codestructure{fileName='%s',classes='%s',methods='%s',imports=%d}",fileName,classes,methods,imports.size());
     }
 
 }

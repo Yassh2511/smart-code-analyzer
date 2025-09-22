@@ -1,115 +1,172 @@
 package com.smartanalyzer;
 
-// Smart code Analyzer - This is the Main entry point for the project
-// That is this is the class where we are writing main function
-public class SmartCodeAnalyzer
-{
-    private static final String VERSION="1.0.0";
+import com.smartanalyzer.core.AnalysisEngine;
+
+
+public class SmartCodeAnalyzer {
+
+    private static final String VERSION = "1.0.0";
 
     public static void main(String[] args) {
-        System.out.println("\uD83D\uDD0DSmart code Anazlyzer v"+VERSION);
-        System.out.println("=".repeat(50));
+        try {
+            // Print welcome banner
+            printBanner();
+
+            // Step 1: Parse command line arguments
+            String sourceDirectory = parseArguments(args);
+
+            // Step 2: Initialize analysis engine
+            System.out.println("🔧 Initializing analysis engine...");
+            AnalysisEngine engine = new AnalysisEngine();
+
+            // Step 3: Scan for Java files
+            engine.initialize(sourceDirectory);
+
+            // Step 4: Run complete analysis
+            System.out.println("🚀 Starting code analysis...");
+            AnalysisEngine.AnalysisResult result = engine.runAnalysis(); // Note: AnalysisEngine.AnalysisResult
+
+            // Step 5: Generate and display reports
+            generateReports(result);
+
+            // Step 6: Exit with appropriate code
+            int exitCode = determineExitCode(result);
+            System.out.println("\n✅ Analysis complete!");
+
+            if (exitCode != 0) {
+                System.out.println("⚠️  Issues found - Review the report above.");
+            } else {
+                System.out.println("🎉 No critical issues found!");
+            }
+
+        } catch (Exception e) {
+            System.err.println("❌ Analysis failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static void printBanner() {
+        System.out.println("🔍 Smart Code Analyzer v" + VERSION);
+        System.out.println("═".repeat(60));
+        System.out.println("📋 A Java-based static code analysis tool");
+        System.out.println("🎯 Detects performance issues, security flaws & code smells");
+        System.out.println("═".repeat(60));
         System.out.println();
-
-        System.out.println("Starting code analysis...");
-        // Here main execution will be done where operations that to perform are
-        // 1.Parse Command line arguments
-        // 2.Initialize analysis engine
-        //3.Run Analysis
-        //4.Generate Reports
-
-        System.out.println("✅Analysis Complete");
-        System.out.println("This will start anaylsis");
     }
-}
 
-package com.smartanalyzer.rules.performance;
+    private static String parseArguments(String[] args) {
+        if (args.length == 0) {
+            System.out.println("📁 No source directory specified, using default: src/test/java");
+            return "src/test/java";
+        }
 
-import com.smartanalyzer.core.Issue;
-import com.smartanalyzer.parser.CodeStructure;
-import com.smartanalyzer.rules.Rule;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+        String sourceDir = args[0];
+        System.out.println("📁 Source directory: " + sourceDir);
+        return sourceDir;
+    }
 
-public class StringConcatenationRule implements Rule {
+    private static void generateReports(AnalysisEngine.AnalysisResult result) {
+        System.out.println("\n📊 ANALYSIS RESULTS");
+        System.out.println("═".repeat(50));
 
-    private static final Pattern STRING_CONCAT_PATTERN =
-            Pattern.compile("\\w+\\s*\\+=\\s*[\"'][^\"']*[\"']|\\w+\\s*\\+=\\s*\\w+");
+        printSummary(result);
+        printViolations(result);
+        printRecommendations(result);
+    }
 
-    @Override
-    public List<Issue> analyze(CodeStructure codeStructure) {
-        List<Issue> issues = new ArrayList<>();
-        String[] lines = codeStructure.getLines();
+    private static void printSummary(AnalysisEngine.AnalysisResult result) {
+        int totalViolations = result.getViolations().size();
+        int totalFiles = result.getTotalFiles();
 
-        for (int i = 0; i < lines.length; i++) {
-            String line = lines[i].trim();
-            Matcher matcher = STRING_CONCAT_PATTERN.matcher(line);
+        System.out.println("📈 SUMMARY:");
+        System.out.println("   📄 Files analyzed: " + totalFiles);
+        System.out.println("   ⚠️  Total issues found: " + totalViolations);
 
-            if (matcher.find() && isInsideLoop(lines, i)) {  // ← This calls the method below
-                issues.add(new Issue(
-                        codeStructure.getFileName(),
-                        i + 1,
-                        getRuleName(),
-                        getDefaultSeverity(),
-                        getCategory(),
-                        "String concatenation in loop using '+=' operator",
-                        "Use StringBuilder for better performance: StringBuilder sb = new StringBuilder();"
-                ));
+        // Count by severity
+        int critical = 0, errors = 0, warnings = 0, info = 0;
+        for (AnalysisEngine.Violation violation : result.getViolations()) {
+            switch (violation.getSeverity()) {
+                case CRITICAL: critical++; break;
+                case ERROR: errors++; break;
+                case WARNING: warnings++; break;
+                case INFO: info++; break;
             }
         }
 
-        return issues;
+        System.out.println("   🔴 Critical: " + critical);
+        System.out.println("   🟠 Errors: " + errors);
+        System.out.println("   🟡 Warnings: " + warnings);
+        System.out.println("   ℹ️  Info: " + info);
+        System.out.println();
     }
 
-    /**
-     * ✅ ADD THIS METHOD - Checks if current line is inside a loop
-     */
-    private boolean isInsideLoop(String[] lines, int currentLine) {
-        int braceCount = 0;
-
-        // Look backwards from current line to find loop constructs
-        for (int i = currentLine; i >= 0; i--) {
-            String line = lines[i].trim();
-
-            // Count braces to track code blocks/scope
-            for (char c : line.toCharArray()) {
-                if (c == '{') braceCount--;  // Opening brace
-                if (c == '}') braceCount++;  // Closing brace
-            }
-
-            // If we've gone outside the current scope, stop looking
-            if (braceCount > 0) {
-                break;
-            }
-
-            // Check for loop keywords (for, while, do-while)
-            if (line.matches(".*\\b(for|while|do)\\s*\\(.*")) {
-                return true;  // Found a loop!
-            }
+    private static void printViolations(AnalysisEngine.AnalysisResult result) {
+        if (result.getViolations().isEmpty()) {
+            System.out.println("🎉 No issues found! Your code looks great!");
+            return;
         }
 
-        return false;  // No loop found
+        System.out.println("🔍 DETAILED ISSUES:");
+        System.out.println("─".repeat(80));
+
+        String currentFile = "";
+
+        for (AnalysisEngine.Violation violation : result.getViolations()) {
+            if (!violation.getFileName().equals(currentFile)) {
+                currentFile = violation.getFileName();
+                System.out.println("\n📄 " + currentFile + ":");
+                System.out.println("   " + "─".repeat(40));
+            }
+
+            String severityIcon = getSeverityIcon(violation.getSeverity());
+            System.out.printf("   %s Line %d: %s%n",
+                    severityIcon,
+                    violation.getLineNumber(),
+                    violation.getMessage());
+            System.out.printf("      🏷️  Rule: %s%n", violation.getRuleName());
+            System.out.println();
+        }
     }
 
-    @Override
-    public String getRuleName() {
-        return "StringConcatenationInLoop";
+    private static void printRecommendations(AnalysisEngine.AnalysisResult result) {
+        if (result.getViolations().isEmpty()) {
+            return;
+        }
+
+        System.out.println("💡 RECOMMENDATIONS:");
+        System.out.println("─".repeat(50));
+
+        long stringConcatIssues = result.getViolations().stream()
+                .filter(v -> v.getRuleName().contains("StringConcatenation"))
+                .count();
+
+        if (stringConcatIssues > 0) {
+            System.out.println("1. 🔧 Fix " + stringConcatIssues + " string concatenation issues:");
+            System.out.println("   → Use StringBuilder in loops for better performance");
+        }
+
+        System.out.println("\n📚 Learn more about Java best practices:");
+        System.out.println("   → Use StringBuilder for string operations in loops");
+        System.out.println();
     }
 
-    @Override
-    public String getDescription() {
-        return "Detects string concatenation using += in loops which can cause performance issues";
+    private static String getSeverityIcon(AnalysisEngine.Severity severity) {
+        switch (severity) {
+            case CRITICAL: return "🔴";
+            case ERROR: return "🟠";
+            case WARNING: return "🟡";
+            case INFO: return "ℹ️";
+            default: return "⚪";
+        }
     }
 
-    @Override
-    public Issue.Severity getDefaultSeverity() {
-        return Issue.Severity.MAJOR;
-    }
-
-    @Override
-    public Issue.Category getCategory() {
-        return Issue.Category.PERFORMANCE;
+    private static int determineExitCode(AnalysisEngine.AnalysisResult result) {
+        for (AnalysisEngine.Violation violation : result.getViolations()) {
+            if (violation.getSeverity() == AnalysisEngine.Severity.CRITICAL ||
+                    violation.getSeverity() == AnalysisEngine.Severity.ERROR) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }

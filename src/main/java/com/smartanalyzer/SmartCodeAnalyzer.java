@@ -1,7 +1,9 @@
 package com.smartanalyzer;
 
+import com.smartanalyzer.core.AnalysisResult;
 import com.smartanalyzer.core.AnalysisEngine;
-
+import com.smartanalyzer.core.Violation;
+import com.smartanalyzer.core.Severity;
 
 public class SmartCodeAnalyzer {
 
@@ -13,7 +15,7 @@ public class SmartCodeAnalyzer {
             printBanner();
 
             // Step 1: Parse command line arguments
-            String sourceDirectory = parseArguments(args);
+            String sourceDirectory = "D:/JAVA-PROJECTS/smart-code-analyzer/src/test";
 
             // Step 2: Initialize analysis engine
             System.out.println("🔧 Initializing analysis engine...");
@@ -24,7 +26,7 @@ public class SmartCodeAnalyzer {
 
             // Step 4: Run complete analysis
             System.out.println("🚀 Starting code analysis...");
-            AnalysisEngine.AnalysisResult result = engine.runAnalysis(); // Note: AnalysisEngine.AnalysisResult
+            AnalysisResult result = engine.runAnalysis(); // Note: AnalysisEngine.AnalysisResult
 
             // Step 5: Generate and display reports
             generateReports(result);
@@ -65,7 +67,7 @@ public class SmartCodeAnalyzer {
         return sourceDir;
     }
 
-    private static void generateReports(AnalysisEngine.AnalysisResult result) {
+    private static void generateReports(AnalysisResult result) {
         System.out.println("\n📊 ANALYSIS RESULTS");
         System.out.println("═".repeat(50));
 
@@ -74,7 +76,7 @@ public class SmartCodeAnalyzer {
         printRecommendations(result);
     }
 
-    private static void printSummary(AnalysisEngine.AnalysisResult result) {
+    private static void printSummary(AnalysisResult result) {
         int totalViolations = result.getViolations().size();
         int totalFiles = result.getTotalFiles();
 
@@ -84,7 +86,7 @@ public class SmartCodeAnalyzer {
 
         // Count by severity
         int critical = 0, errors = 0, warnings = 0, info = 0;
-        for (AnalysisEngine.Violation violation : result.getViolations()) {
+        for (Violation violation : result.getViolations()) {
             switch (violation.getSeverity()) {
                 case CRITICAL: critical++; break;
                 case ERROR: errors++; break;
@@ -100,7 +102,7 @@ public class SmartCodeAnalyzer {
         System.out.println();
     }
 
-    private static void printViolations(AnalysisEngine.AnalysisResult result) {
+    private static void printViolations(AnalysisResult result) {
         if (result.getViolations().isEmpty()) {
             System.out.println("🎉 No issues found! Your code looks great!");
             return;
@@ -111,7 +113,7 @@ public class SmartCodeAnalyzer {
 
         String currentFile = "";
 
-        for (AnalysisEngine.Violation violation : result.getViolations()) {
+        for (Violation violation : result.getViolations()) {
             if (!violation.getFileName().equals(currentFile)) {
                 currentFile = violation.getFileName();
                 System.out.println("\n📄 " + currentFile + ":");
@@ -128,7 +130,7 @@ public class SmartCodeAnalyzer {
         }
     }
 
-    private static void printRecommendations(AnalysisEngine.AnalysisResult result) {
+    private static void printRecommendations(AnalysisResult result) {
         if (result.getViolations().isEmpty()) {
             return;
         }
@@ -150,7 +152,7 @@ public class SmartCodeAnalyzer {
         System.out.println();
     }
 
-    private static String getSeverityIcon(AnalysisEngine.Severity severity) {
+    private static String getSeverityIcon(Severity severity) {
         switch (severity) {
             case CRITICAL: return "🔴";
             case ERROR: return "🟠";
@@ -160,10 +162,10 @@ public class SmartCodeAnalyzer {
         }
     }
 
-    private static int determineExitCode(AnalysisEngine.AnalysisResult result) {
-        for (AnalysisEngine.Violation violation : result.getViolations()) {
-            if (violation.getSeverity() == AnalysisEngine.Severity.CRITICAL ||
-                    violation.getSeverity() == AnalysisEngine.Severity.ERROR) {
+    private static int determineExitCode(AnalysisResult result) {
+        for (Violation violation : result.getViolations()) {
+            if (violation.getSeverity() == Severity.CRITICAL ||
+                    violation.getSeverity() == Severity.ERROR) {
                 return 1;
             }
         }

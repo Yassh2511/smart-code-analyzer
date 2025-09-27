@@ -1,6 +1,7 @@
 package com.smartanalyzer.rules.performance;
 
 import com.smartanalyzer.core.Issue;
+import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.parser.CodeStructure;
 import com.smartanalyzer.rules.Rule;
 
@@ -15,9 +16,9 @@ public class StringConcatenationRule implements Rule
     private static final Pattern STRING_CONCAT_PATTERN=
             Pattern.compile("\\w+\\s*\\+=\\s*[\"'][^\"']*[\"']|\\w+\\s*\\+=\\s*\\w+");
 
-    public List<Issue> analyze(CodeStructure codeStructure)
+    public List<Violation> analyze(CodeStructure codeStructure)
     {
-        List<Issue> issues=new ArrayList<>();
+        List<Violation> violation=new ArrayList<>();
         String[] lines=codeStructure.getLines();
 
         for(int i=0;i<lines.length;i++)
@@ -27,13 +28,13 @@ public class StringConcatenationRule implements Rule
 
             if(matcher.find() && isInsideLoop(lines,i))
             {
-                issues.add(new Issue(codeStructure.getFileName(),i+1,getRuleName(),getDefaultSeverity(),getCategory(),"String concatenation in loop using '+=' operator",
+                violation.add(new Issue(codeStructure.getFileName(),i+1,getRuleName(),getDefaultSeverity(),getCategory(),"String concatenation in loop using '+=' operator",
                         "Use StringBuilder for better performance: StringBuilder sb = new StringBuilder();"));
 
             }
         }
 
-        return issues;
+        return violation;
     }
 
     private boolean isInsideLoop(String[] lines,int currentLine)

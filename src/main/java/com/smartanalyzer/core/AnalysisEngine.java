@@ -1,6 +1,11 @@
 package com.smartanalyzer.core;
 
 
+import com.smartanalyzer.parser.CodeStructure;
+import com.smartanalyzer.parser.JavaFileParser;
+import com.smartanalyzer.rules.performance.StringConcatenationRule;
+import com.smartanalyzer.rules.security.HardcodedCredentialsRule;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -93,46 +98,30 @@ public class AnalysisEngine {
     //apply analysis rules
     // like string concatenation in loops,hardcoded passwords,unused variables
     //Then find violations and add it into result
-    private void analyzeFile(String filePath,AnalysisResult result)
-    {
+    private void analyzeFile(String filePath, AnalysisResult result) {
         try {
-            // Read the file and apply basic string concatenation rule
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            String line;
-            int lineNumber = 0;
-            boolean inLoop = false;
 
-            while ((line = reader.readLine()) != null) {
-                lineNumber++;
-                String trimmedLine = line.trim();
+            StringConcatenationRule stringRule = new StringConcatenationRule();
+            HardcodedCredentialsRule credentialsRule = new HardcodedCredentialsRule();
 
-                // Detect loop start
-                if (trimmedLine.contains("for (") || trimmedLine.contains("while (")) {
-                    inLoop = true;
-                }
+            JavaFileParser parser = new JavaFileParser();
+            CodeStructure codeStructure = parser.parseFile(filePath);
 
-                // Detect loop end
-                if (trimmedLine.equals("}")) {
-                    inLoop = false;
-                }
 
-                // Check for string concatenation in loop
-                if (inLoop && trimmedLine.contains("+=") && trimmedLine.contains("\"")) {
-                    Violation violation = new Violation(
-                            filePath,
-                            lineNumber,
-                            "String Concatenation",
-                            "String concatenation in loop detected. Use StringBuilder for better performance",
-                            Severity.WARNING
-                    );
-                    result.addViolation(violation);
-                }
+            List<Violation> stringViolations = stringRule.analyze(codeStructure);
+            for (Violation violation : stringViolations) {
+                result.addViolation(violation);
             }
-            reader.close();
+
+            List<Violation> credentialViolations = credentialsRule.analyze(filePath);
+            for (Violation violation : credentialViolations) {
+                result.addViolation(violation);
+            }
 
         } catch (Exception e) {
             System.err.println("Error analyzing file: " + filePath + " - " + e.getMessage());
         }
+    }
     }
 
 }

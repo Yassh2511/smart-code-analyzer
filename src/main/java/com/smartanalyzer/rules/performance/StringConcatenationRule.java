@@ -1,6 +1,7 @@
 package com.smartanalyzer.rules.performance;
 
 import com.smartanalyzer.core.Issue;
+import com.smartanalyzer.core.Severity;
 import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.parser.CodeStructure;
 import com.smartanalyzer.rules.Rule;
@@ -28,8 +29,7 @@ public class StringConcatenationRule implements Rule
 
             if(matcher.find() && isInsideLoop(lines,i))
             {
-                violation.add(new Issue(codeStructure.getFileName(),i+1,getRuleName(),getDefaultSeverity(),getCategory(),"String concatenation in loop using '+=' operator",
-                        "Use StringBuilder for better performance: StringBuilder sb = new StringBuilder();"));
+                violation.add(new Violation(codeStructure.getFileName(),i+1,getRuleName(),"String concatenation in loops using += operator", Severity.WARNING));
 
             }
         }

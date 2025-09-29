@@ -1,6 +1,7 @@
 package com.smartanalyzer.rules;
 
 import com.smartanalyzer.core.Issue;
+import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.parser.CodeStructure;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface Rule
 {
     /*Analyze the code structure and return list of issues found
     * working or analyze method*/
-    List<Issue> analyze(CodeStructure codeStructure);
+    List<Violation> analyze(CodeStructure codeStructure);
 
     // Get the unique name of this rule
     String getRuleName();

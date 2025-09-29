@@ -89,6 +89,7 @@ public class AnalysisEngine {
             analyzeFile(filePath,result);
         }
 
+        result.setTotalFiles(sourceFiles.size());
         return result;
     }
 
@@ -122,9 +123,8 @@ public class AnalysisEngine {
             System.err.println("Error analyzing file: " + filePath + " - " + e.getMessage());
         }
     }
-    }
-
 }
+
 
 
 

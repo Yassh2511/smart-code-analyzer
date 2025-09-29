@@ -48,7 +48,7 @@ public class HardcodedCredentialsRule {
                 if(lowerLine.contains(keyWord)&&!lowerLine.contains("system.getproperty")&&!lowerLine.contains("getenv"))
                 {
                     violations.add(new Violation(
-                            filePath,lineNumber,"HardCoded Credentials","Potential hardcoded sensitive information"+keyWord, Severity.CRITICAL
+                            filePath,lineNumber,"HardCoded Credentials","Potential hardcoded sensitive information "+keyWord, Severity.CRITICAL
                     ));
                     return;
                 }

@@ -35,14 +35,14 @@ public class AnalysisEngine {
 
     public void initialize(String sourceDirectory)
     {
-        System.out.println("\uD83D\uDCC1 Scanning directory:"+sourceDirectory);
+        System.out.println("Scanning directory:"+sourceDirectory);
 
         // scanDirectory will locate the particular directory
         // by sending parameter as a File Object of that directory
 
         scanDirectory(new File(sourceDirectory));
 
-        System.out.println("\uD83D\uDCCAFound"+sourceFiles.size()+"jave Files");
+        System.out.println("Found"+sourceFiles.size()+"java Files");
     }
 
     private void scanDirectory(File directory)

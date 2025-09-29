@@ -18,14 +18,18 @@ public class SmartCodeAnalyzer {
             String sourceDirectory = "D:/JAVA-PROJECTS/smart-code-analyzer/src/test";
 
             // Step 2: Initialize analysis engine
-            System.out.println("🔧 Initializing analysis engine...");
+            System.out.println("----Initializing analysis engine---------");
+            System.out.println();
+            System.out.println();
             AnalysisEngine engine = new AnalysisEngine();
 
             // Step 3: Scan for Java files
             engine.initialize(sourceDirectory);
 
             // Step 4: Run complete analysis
-            System.out.println("🚀 Starting code analysis...");
+            System.out.println();
+            System.out.println();
+            System.out.println("-----Starting code analysis-------------");
             AnalysisResult result = engine.runAnalysis(); // Note: AnalysisEngine.AnalysisResult
 
             // Step 5: Generate and display reports
@@ -33,42 +37,42 @@ public class SmartCodeAnalyzer {
 
             // Step 6: Exit with appropriate code
             int exitCode = determineExitCode(result);
-            System.out.println("\n✅ Analysis complete!");
+            System.out.println("\n######## Analysis complete!##########");
 
             if (exitCode != 0) {
-                System.out.println("⚠️  Issues found - Review the report above.");
+                System.out.println("*******Issues found - Review the report above.*******");
             } else {
-                System.out.println("🎉 No critical issues found!");
+                System.out.println("-----No critical issues found!-------");
             }
 
         } catch (Exception e) {
-            System.err.println("❌ Analysis failed: " + e.getMessage());
+            System.err.println("*******Analysis failed:******** " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     private static void printBanner() {
-        System.out.println("🔍 Smart Code Analyzer v" + VERSION);
+        System.out.println("Smart Code Analyzer v" + VERSION);
         System.out.println("═".repeat(60));
-        System.out.println("📋 A Java-based static code analysis tool");
-        System.out.println("🎯 Detects performance issues, security flaws & code smells");
+        System.out.println("A Java-based static code analysis tool");
+        System.out.println("Detects performance issues, security flaws & code smells");
         System.out.println("═".repeat(60));
         System.out.println();
     }
 
     private static String parseArguments(String[] args) {
         if (args.length == 0) {
-            System.out.println("📁 No source directory specified, using default: src/test/java");
+            System.out.println("No source directory specified, using default: src/test/java");
             return "src/test/java";
         }
 
         String sourceDir = args[0];
-        System.out.println("📁 Source directory: " + sourceDir);
+        System.out.println("Source directory: " + sourceDir);
         return sourceDir;
     }
 
     private static void generateReports(AnalysisResult result) {
-        System.out.println("\n📊 ANALYSIS RESULTS");
+        System.out.println("\nANALYSIS RESULTS");
         System.out.println("═".repeat(50));
 
         printSummary(result);
@@ -80,9 +84,9 @@ public class SmartCodeAnalyzer {
         int totalViolations = result.getViolations().size();
         int totalFiles = result.getTotalFiles();
 
-        System.out.println("📈 SUMMARY:");
-        System.out.println("   📄 Files analyzed: " + totalFiles);
-        System.out.println("   ⚠️  Total issues found: " + totalViolations);
+        System.out.println("SUMMARY:");
+        System.out.println("Files analyzed: " + totalFiles);
+        System.out.println("Total issues found: " + totalViolations);
 
         // Count by severity
         int critical = 0, errors = 0, warnings = 0, info = 0;
@@ -116,7 +120,7 @@ public class SmartCodeAnalyzer {
         for (Violation violation : result.getViolations()) {
             if (!violation.getFileName().equals(currentFile)) {
                 currentFile = violation.getFileName();
-                System.out.println("\n📄 " + currentFile + ":");
+                System.out.println("\n" + currentFile + ":");
                 System.out.println("   " + "─".repeat(40));
             }
 
@@ -125,7 +129,7 @@ public class SmartCodeAnalyzer {
                     severityIcon,
                     violation.getLineNumber(),
                     violation.getMessage());
-            System.out.printf("      🏷️  Rule: %s%n", violation.getRuleName());
+            System.out.printf("      Rule: %s%n", violation.getRuleName());
             System.out.println();
         }
     }
@@ -135,11 +139,15 @@ public class SmartCodeAnalyzer {
             return;
         }
 
-        System.out.println("💡 RECOMMENDATIONS:");
+        System.out.println("RECOMMENDATIONS:");
         System.out.println("─".repeat(50));
 
         long stringConcatIssues = result.getViolations().stream()
                 .filter(v -> v.getRuleName().contains("StringConcatenation"))
+                .count();
+
+        long hardCodedRules= result.getViolations().stream()
+                .filter(v -> v.getRuleName().contains("HardCoded Credentials"))
                 .count();
 
         if (stringConcatIssues > 0) {
@@ -147,9 +155,12 @@ public class SmartCodeAnalyzer {
             System.out.println("   → Use StringBuilder in loops for better performance");
         }
 
-        System.out.println("\n📚 Learn more about Java best practices:");
-        System.out.println("   → Use StringBuilder for string operations in loops");
-        System.out.println();
+        if(hardCodedRules > 0) {
+            System.out.println("2.🔧 Fix "+hardCodedRules+" hardcoded credentials issues");
+            System.out.println("   →Never hardcode credentials in source code - always externalize sensitive configuration.");
+        }
+
+        System.out.println("THANK YOU FOR SUPPORT!");
     }
 
     private static String getSeverityIcon(Severity severity) {

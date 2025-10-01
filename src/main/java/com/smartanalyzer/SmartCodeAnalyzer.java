@@ -1,5 +1,6 @@
 package com.smartanalyzer;
 
+import com.smartanalyzer.cli.CommandLineInterface;
 import com.smartanalyzer.core.AnalysisResult;
 import com.smartanalyzer.core.AnalysisEngine;
 import com.smartanalyzer.core.Violation;
@@ -10,32 +11,44 @@ public class SmartCodeAnalyzer {
     private static final String VERSION = "1.0.0";
 
     public static void main(String[] args) {
+        CommandLineInterface cli=new CommandLineInterface();
+        if(!cli.parseArguments(args))
+        {
+            if(cli.isShowHelp())
+            {
+                cli.showHelp();
+            }
+        }
         try {
             // Print welcome banner
             printBanner();
 
-            // Step 1: Parse command line arguments
-            String sourceDirectory = "D:/JAVA-PROJECTS/smart-code-analyzer/src/test";
+            // If verbose mode is enabled it will print with more detailing
 
-            // Step 2: Initialize analysis engine
+            if(cli.isVerbose())
+            {
+                System.out.println("Verbose mode enabled");
+                System.out.println("source directory: "+cli.getSourceDirectory());
+                System.out.println("Output format: "+cli.getOutputFormat());
+            }
+
+
+            // Initializing  analysis engine
             System.out.println("----Initializing analysis engine---------");
             System.out.println();
-            System.out.println();
             AnalysisEngine engine = new AnalysisEngine();
+            engine.initialize(cli.getSourceDirectory());
 
-            // Step 3: Scan for Java files
-            engine.initialize(sourceDirectory);
-
-            // Step 4: Run complete analysis
+            //Run complete analysis
             System.out.println();
             System.out.println();
             System.out.println("-----Starting code analysis-------------");
-            AnalysisResult result = engine.runAnalysis(); // Note: AnalysisEngine.AnalysisResult
+            AnalysisResult result = engine.runAnalysis();
 
-            // Step 5: Generate and display reports
-            generateReports(result);
+            // Generate and display reports
+            generateReports(result,cli);
 
-            // Step 6: Exit with appropriate code
+            // Exit with appropriate code
             int exitCode = determineExitCode(result);
             System.out.println("\n######## Analysis complete!##########");
 
@@ -71,7 +84,7 @@ public class SmartCodeAnalyzer {
         return sourceDir;
     }
 
-    private static void generateReports(AnalysisResult result) {
+    private static void generateReports(AnalysisResult result,CommandLineInterface cli) {
         System.out.println("\nANALYSIS RESULTS");
         System.out.println("═".repeat(50));
 

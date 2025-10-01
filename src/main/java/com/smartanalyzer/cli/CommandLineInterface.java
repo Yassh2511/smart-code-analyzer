@@ -1,7 +1,5 @@
 package com.smartanalyzer.cli;
 
-import java.sql.SQLOutput;
-
 public class CommandLineInterface
 {
     private String sourceDirectory;
@@ -112,7 +110,12 @@ public class CommandLineInterface
         System.out.println(" -o,  --output <file>  Output file path(optional)");
         System.out.println(" -v,  --verbose        Enable verbose output");
         System.out.println(" -h,  --help           Show this help message");
-        System.out.println()
-        ;
+        System.out.println();
     }
+
+    public String getSourceDirectory(){return sourceDirectory;}
+    public String getOutputFormat(){return outputFormat;}
+    public String getOuputFile(){return outputFile;}
+    public boolean isVerbose(){return verbose;}
+    public boolean isShowHelp(){return showHelp;}
 }

@@ -1,5 +1,4 @@
 package com.smartanalyzer;
-
 import com.smartanalyzer.cli.CommandLineInterface;
 import com.smartanalyzer.core.AnalysisResult;
 import com.smartanalyzer.core.AnalysisEngine;

@@ -5,6 +5,8 @@ import com.smartanalyzer.core.AnalysisEngine;
 import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.core.Severity;
 
+import com.smartanalyzer.report.HtmlReportGenerator;
+import java.io.IOException;
 public class SmartCodeAnalyzer {
 
     private static final String VERSION = "1.0.0";
@@ -84,12 +86,26 @@ public class SmartCodeAnalyzer {
     }
 
     private static void generateReports(AnalysisResult result,CommandLineInterface cli) {
-        System.out.println("\nANALYSIS RESULTS");
-        System.out.println("═".repeat(50));
 
-        printSummary(result);
-        printViolations(result);
-        printRecommendations(result);
+        if("html".equals(cli.getOutputFormat())) {
+            try {
+                String outputFile = cli.getOutputFile() != null ? cli.getOutputFile() : "code-analysis-report.html";
+
+                HtmlReportGenerator htmlGenerator = new HtmlReportGenerator();
+                htmlGenerator.generateReport(result, outputFile);
+
+            } catch (IOException e) {
+                System.err.println("Error generating HTML resport:" + e.getMessage());
+            }
+        }
+        else {
+            System.out.println("\nANALYSIS RESULTS");
+            System.out.println("═".repeat(50));
+
+            printSummary(result);
+            printViolations(result);
+            printRecommendations(result);
+        }
     }
 
     private static void printSummary(AnalysisResult result) {

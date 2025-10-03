@@ -115,7 +115,7 @@ public class CommandLineInterface
 
     public String getSourceDirectory(){return sourceDirectory;}
     public String getOutputFormat(){return outputFormat;}
-    public String getOuputFile(){return outputFile;}
+    public String getOutputFile(){return outputFile;}
     public boolean isVerbose(){return verbose;}
     public boolean isShowHelp(){return showHelp;}
 }

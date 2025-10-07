@@ -50,11 +50,11 @@ public class TestBadCode {
     public void whileLoopConcatenation() {
         String content = "";
         int counter = 0;
-
+        ounter + "\n";  // Should be detected
+        counter++;
+    }
         while (counter < 20) {
-            content += "Line " + counter + "\n";  // Should be detected
-            counter++;
-        }
+            content += "Line " + c
     }
 
     // GOOD EXAMPLES - These should NOT trigger violations

@@ -1,18 +1,13 @@
 package com.smartanalyzer.rules.maintainability;
 
-public class MethodComplexityRule {
-
-    import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.core.Severity;
-import com.smartanalyzer.parser.CodeStructure;
+import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.rules.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-    public class MethodComplexityRule implements Rule {
+
+public class MethodComplexityRule implements Rule {
 
         private static final int MAX_METHOD_LINES = 50;
         private static final int MAX_PARAMETERS = 5;
@@ -44,6 +39,95 @@ import java.util.regex.Pattern;
                                 Severity.WARNING
                         ));
                     }
+                    int methodLength = calculateMethodLength(lines, i);
+                    if (methodLength > MAX_METHOD_LINES) {
+                        violations.add(new Violation(
+                                codeStructure.getFileName(),
+                                methodStartLine,
+                                getRuleName(),
+                                "Method '" + methodName + "' is " + methodLength + " lines long (max: " + MAX_METHOD_LINES + ")",
+                                Severity.WARNING
+                        ));
+                    }
+                }
+            }
+
+            return violations;
+        }
+
+        private int countParameters(String parameters) {
+            if (parameters.trim().isEmpty()) {
+                return 0;
+            }
+
+            // Remove whitespace and count commas
+            String cleaned = parameters.trim();
+            if (cleaned.isEmpty()) {
+                return 0;
+            }
+
+            // Count commas + 1 for total parameters
+            int count = 1;
+            for (char c : cleaned.toCharArray()) {
+                if (c == ',') {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        private int calculateMethodLength(String[] lines, int startIndex) {
+            int braceCount = 0;
+            int length = 0;
+            boolean foundOpenBrace = false;
+
+            for (int i = startIndex; i < lines.length; i++) {
+                String line = lines[i].trim();
+                length++;
+
+                for (char c : line.toCharArray()) {
+                    if (c == '{') {
+                        braceCount++;
+                        foundOpenBrace = true;
+                    } else if (c == '}') {
+                        braceCount--;
+                    }
+                }
+
+                // Method ends when braces are balanced
+                if (foundOpenBrace && braceCount == 0) {
+                    return length;
+                }
+
+                // Safety limit
+                if (length > 200) {
+                    return length;
+                }
+            }
+
+            return length;
+        }
+
+        @Override
+        public String getRuleName() {
+            return "Method Complexity";
+        }
+
+        @Override
+        public String getDescription() {
+            return "Detects methods that are too long or have too many parameters";
+        }
+
+        @Override
+        public Severity getDefaultSeverity() {
+            return Severity.WARNING;
+        }
+
+        @Override
+        public com.smartanalyzer.core.Issue.Category getCategory() {
+            return com.smartanalyzer.core.Issue.Category.MAINTAINABILITY;
+        }
+    }
 
 
                 }

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width,initial-scale=1.0'>
+  <title>Smart Code Analyzer Report</title>
+  <style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+.timestamp {
+    margin: 10px 0 0 0;
+    opacity: 0.9;
+}
+.summary {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+.stat-card {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+.stat-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 2em;
+}
+.stat-card p {
+    margin: 0;
+    color: #666;
+}
+.critical-card { background: #fee; border-left: 4px solid #f44336; }
+.error-card { background: #fff3e0; border-left: 4px solid #ff9800; }
+.warning-card { background: #fffde7; border-left: 4px solid #ffc107; }
+.info-card { background: #e3f2fd; border-left: 4px solid #2196f3; }
+.violations {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.violation {
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 4px solid #ccc;
+    background: #fafafa;
+    border-radius: 4px;
+}
+.violation.critical { border-left-color: #f44336; }
+.violation.error { border-left-color: #ff9800; }
+.violation.warning { border-left-color: #ffc107; }
+.violation.info { border-left-color: #2196f3; }
+.violation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.violation-title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.severity-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+}
+.severity-critical { background: #f44336; }
+.severity-error { background: #ff9800; }
+.severity-warning { background: #ffc107; color: #333; }
+.severity-info { background: #2196f3; }
+.violation-location {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+}
+.violation-message {
+    color: #333;
+    line-height: 1.5;
+}
+.recommendations {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.recommendation-item {
+    padding: 12px;
+    margin: 10px 0;
+    background: #f0f7ff;
+    border-left: 4px solid #2196f3;
+    border-radius: 4px;
+}
+.no-issues {
+    text-align: center;
+    padding: 40px;
+    color: #4caf50;
+    font-size: 1.5em;
+}</head>
+<body>
+   <div class='header'>
+       <h1>Smart Code Analyzer Report</h1>
+        <p class='timestamp'>Generated:Mon Oct 06 23:26:20 IST 2025</p>
+   </div>
+    <div class='summary'>
+        <h2>Summary</h2>
+        <p>Files Analyzed: <strong>15</strong></p>
+        <p>Total Issues: <strong>14</strong></p>
+        <div class='stat-grid'>
+            <div class='stat-card critical-card'>
+                <h3>9</h3>
+                <p>Critical</p>
+            </div>
+            <div class='stat-card error-card'>
+                <h3>0</h3>
+                <p>Errors</p>
+            </div>
+            <div class='stat-card warning-card'>
+                <h3>5</h3>
+                <p>Warnings</p>
+            </div>
+            <div class='stat-card info-card'>
+                <h3>0</h3>
+                <p>Info</p>
+            </div>
+        </div>
+    </div>
+    <div class='violations'>
+        <h2>Detected Issues</h2>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>HtmlReportGenerator.java - Line 66</div>
+            <div class='violation-message'>Potential hardcoded sensitive information credential</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>StringConcatenationInLoop</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>StringConcatenationRule.java - Line 32</div>
+            <div class='violation-message'>String concatenation in loops using += operator</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>HardcodedCredentialsRule.java - Line 42</div>
+            <div class='violation-message'>Potential hardcoded sensitive information password</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>StringConcatenationInLoop</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 15</div>
+            <div class='violation-message'>String concatenation in loops using += operator</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>StringConcatenationInLoop</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 27</div>
+            <div class='violation-message'>String concatenation in loops using += operator</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>StringConcatenationInLoop</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 44</div>
+            <div class='violation-message'>String concatenation in loops using += operator</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>StringConcatenationInLoop</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 55</div>
+            <div class='violation-message'>String concatenation in loops using += operator</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 4</div>
+            <div class='violation-message'>Potential hardcoded sensitive information password</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 5</div>
+            <div class='violation-message'>Potential hardcoded sensitive information key</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 6</div>
+            <div class='violation-message'>Potential hardcoded sensitive information password</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 7</div>
+            <div class='violation-message'>Potential hardcoded sensitive information token</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 23</div>
+            <div class='violation-message'>Potential hardcoded sensitive information secret</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 34</div>
+            <div class='violation-message'>Potential hardcoded sensitive information password</div>
+        </div>
+        <div class='violation critical'>
+            <div class='violation-header'>
+                <span class='violation-title'>HardCoded Credentials</span>
+                <span class='severity-badge severity-critical'>CRITICAL</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 35</div>
+            <div class='violation-message'>Potential hardcoded sensitive information password</div>
+        </div>
+    </div>
+   <div class='recommendations'>
+      <h2>Recommendations</h2>
+        <div class='recommendation-item'>
+            <strong>String Concatenation Issues (5)</strong><br>
+            Use StringBuilder for string operations in loops to improve performance.
+        </div>
+        <div class='recommendation-item'>
+            <strong>Hardcoded Credentials (9)</strong><br>
+            Move sensitive data to environment variables or secure configuration files.
+        </div>
+    </div>
+</body>
+</html>

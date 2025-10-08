@@ -5,6 +5,7 @@ import com.smartanalyzer.parser.CodeStructure;
 import com.smartanalyzer.parser.JavaFileParser;
 import com.smartanalyzer.rules.performance.StringConcatenationRule;
 import com.smartanalyzer.rules.security.HardcodedCredentialsRule;
+import com.smartanalyzer.rules.maintainability.MethodComplexityRule;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -108,6 +109,11 @@ public class AnalysisEngine {
             JavaFileParser parser = new JavaFileParser();
             CodeStructure codeStructure = parser.parseFile(filePath);
 
+            MethodComplexityRule complexityRule = new MethodComplexityRule();
+            List<Violation> complexityViolations=complexityRule.analyze(codeStructure);
+            for (Violation violation : complexityViolations) {
+                result.addViolation(violation);
+            }
 
             List<Violation> stringViolations = stringRule.analyze(codeStructure);
             for (Violation violation : stringViolations) {

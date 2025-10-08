@@ -130,4 +130,3 @@ public class MethodComplexityRule implements Rule {
     }
 
 
-                }

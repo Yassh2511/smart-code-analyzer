@@ -72,4 +72,77 @@ public class TestBadCode {
         // Good: Reading from config
         String password = System.getProperty("db.password");
     }
+
+    public void veryLongMethod() {
+        System.out.println("Line 1");
+        System.out.println("Line 2");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+
+        System.out.println("Line 3");
+
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        System.out.println("Line 3");
+        // ... add 50+ lines to trigger the rule
+        for (int i = 0; i < 20; i++) {
+            System.out.println("Line " + i);
+            System.out.println("More code");
+            System.out.println("Even more code");
+        }
+    }
 }

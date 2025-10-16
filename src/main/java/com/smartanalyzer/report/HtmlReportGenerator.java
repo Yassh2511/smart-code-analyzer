@@ -22,6 +22,7 @@ public class HtmlReportGenerator {
         html.append("  <title>Smart Code Analyzer Report</title>\n");
         html.append("  <style>\n");
         html.append(getStyles());
+        html.append("  </style>\n");
         html.append("</head>\n");
         html.append("<body>\n");
 
@@ -130,6 +131,7 @@ public class HtmlReportGenerator {
                 .replace("\"", "&quot;")
                 .replace("'", "&#x27;");
     }
+
 
     private String generateSummarySection(AnalysisResult result)
     {
@@ -295,7 +297,7 @@ public class HtmlReportGenerator {
                 "    padding: 40px;\n" +
                 "    color: #4caf50;\n" +
                 "    font-size: 1.5em;\n" +
-                "}";
+                "}\n";
 
     }
 

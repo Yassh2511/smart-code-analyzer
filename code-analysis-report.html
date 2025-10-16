@@ -123,16 +123,18 @@ body {
     padding: 40px;
     color: #4caf50;
     font-size: 1.5em;
-}</head>
+}
+  </style>
+</head>
 <body>
    <div class='header'>
        <h1>Smart Code Analyzer Report</h1>
-        <p class='timestamp'>Generated:Mon Oct 06 23:26:20 IST 2025</p>
+        <p class='timestamp'>Generated:Thu Oct 16 23:43:16 IST 2025</p>
    </div>
     <div class='summary'>
         <h2>Summary</h2>
-        <p>Files Analyzed: <strong>15</strong></p>
-        <p>Total Issues: <strong>14</strong></p>
+        <p>Files Analyzed: <strong>16</strong></p>
+        <p>Total Issues: <strong>18</strong></p>
         <div class='stat-grid'>
             <div class='stat-card critical-card'>
                 <h3>9</h3>
@@ -143,7 +145,7 @@ body {
                 <p>Errors</p>
             </div>
             <div class='stat-card warning-card'>
-                <h3>5</h3>
+                <h3>9</h3>
                 <p>Warnings</p>
             </div>
             <div class='stat-card info-card'>
@@ -154,12 +156,28 @@ body {
     </div>
     <div class='violations'>
         <h2>Detected Issues</h2>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>Method Complexity</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>CommandLineInterface.java - Line 11</div>
+            <div class='violation-message'>Method &#x27;parseArguments&#x27; is 84 lines long (max: 50)</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>Method Complexity</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>HtmlReportGenerator.java - Line 180</div>
+            <div class='violation-message'>Method &#x27;getStyles&#x27; is 123 lines long (max: 50)</div>
+        </div>
         <div class='violation critical'>
             <div class='violation-header'>
                 <span class='violation-title'>HardCoded Credentials</span>
                 <span class='severity-badge severity-critical'>CRITICAL</span>
             </div>
-            <div class='violation-location'>HtmlReportGenerator.java - Line 66</div>
+            <div class='violation-location'>HtmlReportGenerator.java - Line 67</div>
             <div class='violation-message'>Potential hardcoded sensitive information credential</div>
         </div>
         <div class='violation warning'>
@@ -177,6 +195,22 @@ body {
             </div>
             <div class='violation-location'>HardcodedCredentialsRule.java - Line 42</div>
             <div class='violation-message'>Potential hardcoded sensitive information password</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>Method Complexity</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>SmartCodeAnalyzer.java - Line 14</div>
+            <div class='violation-message'>Method &#x27;main&#x27; is 53 lines long (max: 50)</div>
+        </div>
+        <div class='violation warning'>
+            <div class='violation-header'>
+                <span class='violation-title'>Method Complexity</span>
+                <span class='severity-badge severity-warning'>WARNING</span>
+            </div>
+            <div class='violation-location'>TestBadCode.java - Line 76</div>
+            <div class='violation-message'>Method &#x27;veryLongMethod&#x27; is 72 lines long (max: 50)</div>
         </div>
         <div class='violation warning'>
             <div class='violation-header'>
@@ -207,7 +241,7 @@ body {
                 <span class='violation-title'>StringConcatenationInLoop</span>
                 <span class='severity-badge severity-warning'>WARNING</span>
             </div>
-            <div class='violation-location'>TestBadCode.java - Line 55</div>
+            <div class='violation-location'>TestBadCode.java - Line 57</div>
             <div class='violation-message'>String concatenation in loops using += operator</div>
         </div>
         <div class='violation critical'>

@@ -1,6 +1,7 @@
 package com.smartanalyzer.rules;
 
 import com.smartanalyzer.core.Issue;
+import com.smartanalyzer.core.Severity;
 import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.parser.CodeStructure;
 import java.util.List;
@@ -21,11 +22,11 @@ public interface Rule
 
     // Get defualtSeverity issues found by thie role
 
-    Issue.Severity getDefaultSeverity();
+    //Severity getDefaultSeverity();
 
     // get category belong to the issue
 
-    Issue.Category getCategory();
+    //Issue.Category getCategory();
 
     // check if rule is enabled
 

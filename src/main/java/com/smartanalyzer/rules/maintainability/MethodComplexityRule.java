@@ -3,7 +3,11 @@ package com.smartanalyzer.rules.maintainability;
 import com.smartanalyzer.core.Severity;
 import com.smartanalyzer.core.Violation;
 import com.smartanalyzer.rules.Rule;
+import com.smartanalyzer.parser.CodeStructure;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -118,15 +122,15 @@ public class MethodComplexityRule implements Rule {
             return "Detects methods that are too long or have too many parameters";
         }
 
-        @Override
-        public Severity getDefaultSeverity() {
-            return Severity.WARNING;
-        }
-
-        @Override
-        public com.smartanalyzer.core.Issue.Category getCategory() {
-            return com.smartanalyzer.core.Issue.Category.MAINTAINABILITY;
-        }
+//        @Override
+//        public Severity getDefaultSeverity() {
+//            return Severity.WARNING;
+//        }
+//
+//        @Override
+//        public com.smartanalyzer.core.Issue.Category getCategory() {
+//            return com.smartanalyzer.core.Issue.Category.MAINTAINABILITY;
+//        }
     }
 
 
